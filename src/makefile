@@ -1,5 +1,5 @@
 chip8:		main.cpp
-		g++ -o chip8 main.cpp chip8.cpp platform.cpp `sdl2-config --cflags --libs`
+		g++ -o chip8 main.cpp chip8.cpp platform.cpp glad.c -lglfw -lGL -lX11 -lpthread -lXrandr -lXi -ldl
 
 clean:
 		rm chip8
