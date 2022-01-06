@@ -9,7 +9,6 @@
 #include <iostream>
 
 #include "chip8.hpp"
-#include "platform.hpp"
 #include "Shader.h"
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
