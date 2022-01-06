@@ -1,7 +1,13 @@
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
+// OpenGL math libraries
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/type_ptr.hpp>
+
 #include <chrono>
 #include <iostream>
+
 #include "chip8.hpp"
 #include "platform.hpp"
 #include "Shader.h"
@@ -20,7 +26,7 @@ int main(int argc, char** argv)
 	// int videoScale = std::stoi(argv[1]);
 	// int cycleDelay = std::stoi(argv[2]);
 	// char const* romFilename = argv[3];
-	int videoScale = 20;
+	int videoScale = 30;
 
 	// glfw: initialize and configure
     // ------------------------------
@@ -57,10 +63,10 @@ int main(int argc, char** argv)
     // set up vertex data (and buffer(s)) and configure vertex attributes
     // ------------------------------------------------------------------
     float vertices[] = {
-         0.5f,  0.5f, 0.0f,  // top right
-         0.5f, -0.5f, 0.0f,  // bottom right
-        -0.5f, -0.5f, 0.0f,  // bottom left
-        -0.5f,  0.5f, 0.0f   // top left 
+         1.0f/(64 * videoScale),  1.0f/(32 * videoScale), 0.0f,  // top right
+         1.0f/(64 * videoScale), -1.0f/(32 * videoScale), 0.0f, // bottom right
+        -1.0f/(64 * videoScale), -1.0f/(32 * videoScale), 0.0f, // bottom left
+        -1.0f/(64 * videoScale),  1.0f/(32 * videoScale), 0.0f   // top left 
     };
     unsigned int indices[] = {  // note that we start from 0!
         0, 1, 3,  // first Triangle
@@ -85,6 +91,8 @@ int main(int argc, char** argv)
     // note that this is allowed, the call to glVertexAttribPointer registered VBO as the vertex attribute's bound vertex buffer object so afterwards we can safely unbind
     glBindBuffer(GL_ARRAY_BUFFER, 0); 
 
+    unsigned int modelLoc = glGetUniformLocation(ourShader.ID, "model");
+
     // render loop
     // -----------
     while (!glfwWindowShouldClose(window))
@@ -101,6 +109,9 @@ int main(int argc, char** argv)
 		// render the triangle
         ourShader.use();
         glBindVertexArray(VAO);
+        glm::mat4 model = glm::mat4(1.0f);
+        model = glm::translate(model, glm::vec3(0.0f, .5f, 0.0f));
+        glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
         glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 
         // glfw: swap buffers and poll IO events (keys pressed/released, mouse moved etc.)
