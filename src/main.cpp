@@ -10,6 +10,7 @@
 
 #include "chip8.hpp"
 #include "Shader.h"
+#include "graphics.hpp"
 
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
@@ -23,18 +24,20 @@ int main(int argc, char** argv)
 		std::exit(EXIT_FAILURE);
 	}
 
+    Graphics *graphics = new Graphics();
+
 	// int videoScale = std::stoi(argv[1]);
 	int cycleDelay = std::stoi(argv[1]);
 	char const* romFilename = argv[2];
 	int videoScale = 30;
 
-	// glfw: initialize and configure
-    // ------------------------------
-    glfwInit();
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
-    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-
+	// // glfw: initialize and configure
+    // // ------------------------------
+    // glfwInit();
+    // glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+    // glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+    // glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+    graphics->setup_window();
 
     // glfw window creation
     // --------------------
