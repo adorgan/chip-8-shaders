@@ -1,10 +1,12 @@
+// source: https://austinmorlan.com/posts/chip8_emulator/#what-is-an-emulator
 #ifndef CHIP8_HPP
 #define CHIP8_HPP
 #include <cstdlib>
 #include <iostream>
-// source: https://austinmorlan.com/posts/chip8_emulator/#what-is-an-emulator
-const unsigned int VIDEO_HEIGHT = 32;
-const unsigned int VIDEO_WIDTH = 64;
+
+#define VIDEO_HEIGHT 32
+#define VIDEO_WIDTH  64
+
 class Chip8 {
     public:
         Chip8();

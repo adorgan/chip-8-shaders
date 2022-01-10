@@ -11,8 +11,6 @@
 #include "chip8.hpp"
 #include "Shader.h"
 
-#define  SCREEN_WIDTH  64
-#define  SCREEN_HEIGHT 32
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 void processInput(GLFWwindow *window, Chip8 *chip8);
@@ -40,7 +38,7 @@ int main(int argc, char** argv)
 
     // glfw window creation
     // --------------------
-    GLFWwindow* window = glfwCreateWindow(SCREEN_WIDTH * videoScale, SCREEN_HEIGHT * videoScale, "Chip-8 With Shaders", NULL, NULL);
+    GLFWwindow* window = glfwCreateWindow(VIDEO_WIDTH * videoScale, VIDEO_HEIGHT * videoScale, "Chip-8 With Shaders", NULL, NULL);
     if (window == NULL)
     {
         std::cout << "Failed to create GLFW window" << std::endl;
@@ -65,10 +63,10 @@ int main(int argc, char** argv)
     // set up vertex data (and buffer(s)) and configure vertex attributes
     // ------------------------------------------------------------------
     float vertices[] = {
-         1.0f/(SCREEN_WIDTH * 1),  1.0f/(SCREEN_HEIGHT * 1), 0.0f,  // top right
-         1.0f/(SCREEN_WIDTH * 1), -1.0f/(SCREEN_HEIGHT * 1), 0.0f,  // bottom right
-        -1.0f/(SCREEN_WIDTH * 1), -1.0f/(SCREEN_HEIGHT * 1), 0.0f,  // bottom left
-        -1.0f/(SCREEN_WIDTH * 1),  1.0f/(SCREEN_HEIGHT * 1), 0.0f   // top left 
+         1.0f/(VIDEO_WIDTH * 1),  1.0f/(VIDEO_HEIGHT * 1), 0.0f,  // top right
+         1.0f/(VIDEO_WIDTH * 1), -1.0f/(VIDEO_HEIGHT * 1), 0.0f,  // bottom right
+        -1.0f/(VIDEO_WIDTH * 1), -1.0f/(VIDEO_HEIGHT * 1), 0.0f,  // bottom left
+        -1.0f/(VIDEO_WIDTH * 1),  1.0f/(VIDEO_HEIGHT * 1), 0.0f   // top left 
     };
     unsigned int indices[] = {  // note that we start from 0!
         0, 1, 3,  // first Triangle
@@ -130,9 +128,9 @@ int main(int argc, char** argv)
 
 			// chip 8 cycle
             chip8->cycle();
-            for(int y = 0; y < SCREEN_HEIGHT; y++){
-                for(int x = 0; x < SCREEN_WIDTH; x++){
-                    if(chip8->screen[(y * SCREEN_WIDTH) + x] == 0){
+            for(int y = 0; y < VIDEO_HEIGHT; y++){
+                for(int x = 0; x < VIDEO_WIDTH; x++){
+                    if(chip8->screen[(y * VIDEO_WIDTH) + x] == 0){
                         color[0] = 0.0f;
                         color[1] = 0.0f;
                         color[2] = 0.0f;
