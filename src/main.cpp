@@ -11,6 +11,9 @@
 #include "chip8.hpp"
 #include "Shader.h"
 
+#define  SCREEN_WIDTH  64
+#define  SCREEN_HEIGHT 32
+
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 void processInput(GLFWwindow *window, Chip8 *chip8);
 
@@ -18,7 +21,7 @@ int main(int argc, char** argv)
 {
 	if (argc != 3)
 	{
-		std::cerr << "Usage: " << argv[0] << "<Cycle Dela> <ROM>\n";
+		std::cerr << "Usage: " << argv[0] << " <Cycle Dela> <ROM>\n";
 		std::exit(EXIT_FAILURE);
 	}
 
@@ -37,7 +40,7 @@ int main(int argc, char** argv)
 
     // glfw window creation
     // --------------------
-    GLFWwindow* window = glfwCreateWindow(64 * videoScale, 32 * videoScale, "Chip-8 With Shaders", NULL, NULL);
+    GLFWwindow* window = glfwCreateWindow(SCREEN_WIDTH * videoScale, SCREEN_HEIGHT * videoScale, "Chip-8 With Shaders", NULL, NULL);
     if (window == NULL)
     {
         std::cout << "Failed to create GLFW window" << std::endl;
@@ -62,10 +65,10 @@ int main(int argc, char** argv)
     // set up vertex data (and buffer(s)) and configure vertex attributes
     // ------------------------------------------------------------------
     float vertices[] = {
-         1.0f/(64 * 1),  1.0f/(32 * 1), 0.0f,  // top right
-         1.0f/(64 * 1), -1.0f/(32 * 1), 0.0f, // bottom right
-        -1.0f/(64 * 1), -1.0f/(32 * 1), 0.0f, // bottom left
-        -1.0f/(64 * 1),  1.0f/(32 * 1), 0.0f   // top left 
+         1.0f/(SCREEN_WIDTH * 1),  1.0f/(SCREEN_HEIGHT * 1), 0.0f,  // top right
+         1.0f/(SCREEN_WIDTH * 1), -1.0f/(SCREEN_HEIGHT * 1), 0.0f,  // bottom right
+        -1.0f/(SCREEN_WIDTH * 1), -1.0f/(SCREEN_HEIGHT * 1), 0.0f,  // bottom left
+        -1.0f/(SCREEN_WIDTH * 1),  1.0f/(SCREEN_HEIGHT * 1), 0.0f   // top left 
     };
     unsigned int indices[] = {  // note that we start from 0!
         0, 1, 3,  // first Triangle
@@ -99,6 +102,7 @@ int main(int argc, char** argv)
     // load chip 8
     Chip8 *chip8 = new Chip8();
 	chip8->loadROM(romFilename);
+
     // render loop
     // -----------
     auto lastCycleTime = std::chrono::high_resolution_clock::now();
@@ -126,9 +130,9 @@ int main(int argc, char** argv)
 
 			// chip 8 cycle
             chip8->cycle();
-            for(int y = 0; y < 32; y++){
-                for(int x = 0; x < 64; x++){
-                    if(chip8->screen[(y * 64) + x] == 0){
+            for(int y = 0; y < SCREEN_HEIGHT; y++){
+                for(int x = 0; x < SCREEN_WIDTH; x++){
+                    if(chip8->screen[(y * SCREEN_WIDTH) + x] == 0){
                         color[0] = 0.0f;
                         color[1] = 0.0f;
                         color[2] = 0.0f;
@@ -151,31 +155,7 @@ int main(int argc, char** argv)
                     glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
                 }
             }
-		}
-
-
-        
-
-        // color[0] = 1.0f;
-        // color[1] = 1.0f;
-        // color[2] = 1.0f;
-        
-        
-        // glm::mat4 model = glm::mat4(1.0f);
-        // model = glm::translate(model, glm::vec3(x_, .1f, 0.0f));
-        // model = glm::translate(model, glm::vec3(-1, -1, 0.0f));
-        // glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
-        // glUniform3fv(colorLoc, 1, color);
-        // glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
-
-        // render
-        // ------
-       
-
-		// render the triangle
-        
-        
-        
+		} 
 
         // glfw: swap buffers and poll IO events (keys pressed/released, mouse moved etc.)
         // -------------------------------------------------------------------------------
@@ -188,34 +168,6 @@ int main(int argc, char** argv)
     glfwTerminate();
     return 0;
 
-	// Platform platform("CHIP-8 Emulator", VIDEO_WIDTH * videoScale, VIDEO_HEIGHT * videoScale, VIDEO_WIDTH, VIDEO_HEIGHT);
-
-	// Chip8 chip8;
-	// chip8.loadROM(romFilename);
-
-	// int videoPitch = sizeof(chip8.screen[0]) * VIDEO_WIDTH;
-
-	// auto lastCycleTime = std::chrono::high_resolution_clock::now();
-	// bool quit = false;
-
-	// while (!quit)
-	// {
-	// 	quit = platform.ProcessInput(chip8.key);
-
-	// 	auto currentTime = std::chrono::high_resolution_clock::now();
-	// 	float dt = std::chrono::duration<float, std::chrono::milliseconds::period>(currentTime - lastCycleTime).count();
-
-	// 	if (dt > cycleDelay)
-	// 	{
-	// 		lastCycleTime = currentTime;
-
-	// 		chip8.cycle();
-
-	// 		platform.Update(chip8.screen, videoPitch);
-	// 	}
-	// }
-
-	// return 0;
 }
 
 
