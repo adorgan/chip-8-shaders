@@ -41,10 +41,9 @@ void Chip8::loadROM(const char *filename){
 		file.close();
 
 		// Load the ROM contents into the Chip8's memory, starting at 0x200
-		for (long i = 0; i < size; ++i)
-		{
+		for (long i = 0; i < size; ++i){
 			memory[0x200 + i] = buffer[i];
-		}
+	    }
 
 		// Free the buffer
 		delete[] buffer;
@@ -201,6 +200,7 @@ void Chip8::cycle(){
 	if (sound_timer > 0){
 		sound_timer--;
 	}
+
 }
 
 /* opcodes */
