@@ -54,6 +54,7 @@ int main(int argc, char** argv)
     // render loop
     // -----------
     auto lastCycleTime = std::chrono::high_resolution_clock::now();
+    int lessthan = 0;
     while (!glfwWindowShouldClose(window))
     {
         // input
@@ -62,20 +63,19 @@ int main(int argc, char** argv)
 
         ourShader.use();
         glBindVertexArray(VAO);
-        
-        // glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
-        // glClear(GL_COLOR_BUFFER_BIT);
 
         GLfloat color[3]; 
         
         auto currentTime = std::chrono::high_resolution_clock::now();
 		float dt = std::chrono::duration<float, std::chrono::milliseconds::period>(currentTime - lastCycleTime).count();
-        printf("%f\n", dt);
+        
 		if (dt > cycleDelay)
 		{
+            glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+            glClear(GL_COLOR_BUFFER_BIT);
             
-			lastCycleTime = currentTime;
-
+            lastCycleTime = currentTime;
+            
 			// chip 8 cycle
             chip8->cycle();
             for(int y = 0; y < VIDEO_HEIGHT; y++){
